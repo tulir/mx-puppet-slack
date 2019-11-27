@@ -1,0 +1,14 @@
+apiVersion: v1
+name: mx-puppet-slack
+version: 0.1.0
+appVersion: "0.1.0"
+description: A slack puppeting bridge for matrix.
+keywords:
+  - matrix
+  - bridge
+  - slack
+maintainers:
+  - name: Tulir Asokan
+    email: tulir@maunium.net
+sources:
+  - https://github.com/Sorunome/mx-puppet-slack

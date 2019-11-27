@@ -1,0 +1,111 @@
+image:
+  repository: Sorunome/mx-puppet-slack
+  tag: latest
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+service:
+  type: ClusterIP
+  port: 8434
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Postgres pod configs
+postgresql:
+  enabled: true
+  postgresqlDatabase: mxtg
+  persistence:
+    size: 2Gi
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+
+appservice:
+  id: mx-puppet-slack
+  asToken: random string here
+  hsToken: random string here
+  usernameTemplate: "@slack_.*:yourserver\\.com"
+  aliasTemplate: "@slack_.*:yourserver\\.com"
+  address: http://localhost:8434
+  botUsername: slackbot
+
+bridge:
+  # Public domain of the homeserver
+  domain: example.com
+  # Reachable URL of the Matrix homeserver
+  homeserverUrl: https://example.com
+
+# Slack OAuth settings. Create a slack app at https://api.slack.com/apps
+oauth:
+  enabled: false
+  # Slack app credentials.
+  # N.B. This must be quoted so YAML wouldn't parse it as a float.
+  clientId: "242181311531.253471660323"
+  clientSecret: b3561066aa9af814155a12d33d9a28be
+  # Path where to listen for OAuth redirect callbacks.
+  redirectPath: /slack/oauth
+  # Set up proxying from https://your.domain/redirect_path to http://bindAddress:port/redirect_path,
+  # then set this field and the Slack app redirect URI field to the former.
+  redirectUri: https://your.domain/slack/oauth
+
+presence:
+  # Bridge Slack online/offline status
+  enabled: true
+  # How often to send status to the homeserver in milliseconds
+  interval: 500
+
+provisioning:
+  # Regex of Matrix IDs allowed to use the puppet bridge
+  whitelist:
+    # Allow a specific user
+    #- "@user:server\\.com"
+    # Allow users on a specific homeserver
+    - "@.*:yourserver\\.com"
+    # Allow anyone
+    #- ".*"
+    # Regex of Matrix IDs forbidden from using the puppet bridge
+    #blacklist:
+    # Disallow a specific user
+    #- "@user:server\\.com"
+    # Disallow users on a specific homeserver
+    #- "@.*:yourserver\\.com"
+
+relay:
+  enabled: false
+  whitelist:
+    # If relay is enabled, allow everyone
+    - ".*"
+  #blacklist:
+  # - "@user:server\\.com"
+
+logging:
+  # Log level of console output
+  # Allowed values starting with most verbose:
+  # silly, verbose, info, warn, error
+  console: info
+  # Date and time formatting
+  lineDateFormat: MMM-D HH:mm:ss.SSS
+  # Logging files
+  files: []

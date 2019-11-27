@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "mx-puppet-slack.fullname" . }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/name: {{ template "mx-puppet-slack.name" . }}
+data:
+  config.yaml: |
+    bridge:
+      port: {{ .Values.service.port }}
+      bindAddress: 0.0.0.0
+      domain: {{ .Values.bridge.domain }}
+      homeserverUrl: {{ .Values.bridge.homeserverUrl }}
+
+    {{- if .Values.postgresql.enabled }}
+    database:
+      connString: "postgres://postgres:{{ .Values.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql/{{ .Values.postgresql.postgresqlDatabase }}"
+    {{- else }}
+    database:
+      {{- toYaml .Values.database | nindent 6 }}
+    {{- end }}
+
+    oauth:
+      {{- toYaml .Values.oauth | nindent 6 }}
+
+    presence:
+      {{- toYaml .Values.presence | nindent 6 }}
+
+    provisioning:
+      {{- toYaml .Values.provisioning | nindent 6 }}
+
+    relay:
+      {{- toYaml .Values.relay | nindent 6 }}
+
+    logging:
+      {{- toYaml .Values.logging | nindent 6 }}
+  slack-registration.yaml: |
+    id: {{ .Values.appservice.id }}
+    as_token: {{ .Values.appservice.asToken }}
+    hs_token: {{ .Values.appservice.hsToken }}
+    namespaces:
+        users:
+            - exclusive: true
+              regex: "@{{ .Values.bridge.username_template | replace "{userid}" ".+"}}:{{ .Values.homeserver.domain }}"
+        aliases:
+            - exclusive: true
+              regex: "@{{ .Values.bridge.alias_template | replace "{groupname}" ".+"}}:{{ .Values.homeserver.domain }}"
+    url: {{ .Values.appservice.address }}
+    sender_localpart: {{ .Values.appservice.botUsername }}
+    rate_limited: false
+
