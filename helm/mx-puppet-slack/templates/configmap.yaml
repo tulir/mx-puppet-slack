@@ -44,10 +44,10 @@ data:
     namespaces:
         users:
             - exclusive: true
-              regex: "@{{ .Values.bridge.username_template | replace "{userid}" ".+"}}:{{ .Values.homeserver.domain }}"
+              regex: "{{ .Values.appservice.usernameTemplate }}"
         aliases:
             - exclusive: true
-              regex: "@{{ .Values.bridge.alias_template | replace "{groupname}" ".+"}}:{{ .Values.homeserver.domain }}"
+              regex: "{{ .Values.appservice.aliasTemplate }}"
     url: {{ .Values.appservice.address }}
     sender_localpart: {{ .Values.appservice.botUsername }}
     rate_limited: false

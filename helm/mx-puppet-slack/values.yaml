@@ -1,5 +1,5 @@
 image:
-  repository: Sorunome/mx-puppet-slack
+  repository: docker.io/sorunome/mx-puppet-slack
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -34,7 +34,8 @@ affinity: {}
 # Postgres pod configs
 postgresql:
   enabled: true
-  postgresqlDatabase: mxtg
+  postgresqlPassword: generate random password here
+  postgresqlDatabase: mxslack
   persistence:
     size: 2Gi
   resources:

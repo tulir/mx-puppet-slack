@@ -6,10 +6,10 @@ hs_token: {{ .Values.appservice.hsToken }}
 namespaces:
     users:
         - exclusive: true
-          regex: "{{ .Values.bridge.usernameTemplate }}"
+          regex: "{{ .Values.appservice.usernameTemplate }}"
     aliases:
         - exclusive: true
-          regex: "{{ .Values.bridge.aliasTemplate }}"
+          regex: "{{ .Values.appservice.aliasTemplate }}"
 url: {{ .Values.appservice.address }}
 sender_localpart: {{ .Values.appservice.botUsername }}
 rate_limited: false
