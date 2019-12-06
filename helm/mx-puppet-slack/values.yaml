@@ -34,8 +34,8 @@ affinity: {}
 # Postgres pod configs
 postgresql:
   enabled: true
-  postgresqlPassword: generate random password here
   postgresqlDatabase: mxslack
+  postgresqlPassword: SET TO RANDOM STRING
   persistence:
     size: 2Gi
   resources:
