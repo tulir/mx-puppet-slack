@@ -141,6 +141,7 @@ async function run() {
 	puppet.setCreateRoomHook(slack.createRoom.bind(slack));
 	puppet.setCreateGroupHook(slack.createGroup.bind(slack));
 	puppet.setGetDmRoomIdHook(slack.getDmRoom.bind(slack));
+	puppet.setGetGroupInfoHook(slack.getGroupInfo.bind(slack));
 	puppet.setListUsersHook(slack.listUsers.bind(slack));
 	puppet.setListRoomsHook(slack.listRooms.bind(slack));
 	puppet.setListGroupsHook(slack.listGroups.bind(slack));

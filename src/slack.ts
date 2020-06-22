@@ -6,6 +6,7 @@ import {
 	IRemoteUser,
 	IRemoteRoom,
 	IRemoteGroup,
+	IGroupInfo,
 	IFileEvent,
 	Util,
 	IRetList,
@@ -904,6 +905,33 @@ export class App {
 			});
 		}
 		return reply;
+	}
+
+	public async getGroupInfo(puppetId: number, groupId: string): Promise<IGroupInfo | null> {
+		if (puppetId === -1) {
+			for (const p of Object.values(this.puppets)) {
+				const team = p.client.teams.get(groupId);
+				if (team) {
+					return {
+						groupId: team.id,
+						name: team.name,
+					}
+				}
+			}
+			return null;
+		}
+		const p = this.puppets[puppetId];
+		if (!p) {
+			return null;
+		}
+		const team = p.client.teams.get(groupId);
+		if (!team) {
+			return null;
+		}
+		return {
+			groupId: team.id,
+			name: team.name,
+		}
 	}
 
 	public async getUserIdsInRoom(room: IRemoteRoom): Promise<Set<string> | null> {
